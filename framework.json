@@ -1,0 +1,115 @@
+{
+  "scope": "general",
+  "description": "for MUIT trainin",
+  "tags": [
+    "Java+Gradle"
+  ],
+  "workspaceConfig": {
+    "environments": {
+      "default": {
+        "recipe": {
+          "contentType": "application/x-yaml",
+          "type": "compose",
+          "content": "services:\n db:\n  image: eclipse/mysql\n  environment:\n   MYSQL_ROOT_PASSWORD: password\n   MYSQL_DATABASE: training\n   MYSQL_USER: muit\n   MYSQL_PASSWORD: password\n  mem_limit: 1073741824\n dev-machine:\n  image: eclipse/muit\n  mem_limit: 2147483648\n  depends_on:\n   - db\n"
+        },
+        "machines": {
+          "db": {
+            "env": {
+              "CHE_MACHINE_NAME": "db"
+            },
+            "servers": {
+              "mysql": {
+                "attributes": {},
+                "protocol": "tcp",
+                "port": "3306"
+              }
+            },
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal"
+            ],
+            "attributes": {
+              "memoryLimitBytes": "1073741824"
+            }
+          },
+          "dev-machine": {
+            "env": {
+              "CHE_MACHINE_NAME": "dev-machine"
+            },
+            "servers": {
+              "Glassfish": {
+                "attributes": {},
+                "protocol": "http",
+                "port": "8080"
+              },
+              "Payara": {
+                "attributes": {},
+                "protocol": "https",
+                "port": "4848"
+              }
+            },
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal",
+              "org.eclipse.che.ws-agent"
+            ],
+            "attributes": {
+              "memoryLimitBytes": "2147483648"
+            }
+          }
+        }
+      }
+    },
+    "commands": [
+      {
+        "commandLine": "mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e 'show databases;'",
+        "name": "show databases",
+        "type": "custom",
+        "attributes": {}
+      },
+      {
+        "commandLine": "echo 'check the previewURL'",
+        "name": "Payara",
+        "type": "custom",
+        "attributes": {
+          "previewUrl": "${server.Payara}"
+        }
+      }
+    ],
+    "projects": [],
+    "defaultEnv": "default",
+    "name": "wksp-wj0z",
+    "links": []
+  },
+  "components": [
+    {
+      "version": "5.7.19",
+      "name": "MySQL"
+    },
+    {
+      "version": "1.8.0_171",
+      "name": "JDK"
+    },
+    {
+      "version": "4.8.1",
+      "name": "Gradle"
+    },
+    {
+      "version": "9.4",
+      "name": "Debian"
+    },
+    {
+      "version": "5.0",
+      "name": "Payara"
+    },
+    {
+      "version": "3.3.9",
+      "name": "Maven"
+    }
+  ],
+  "creator": "che",
+  "name": "Java-EE",
+  "id": "stackdnvmvcl0ljx9moya"
+}
